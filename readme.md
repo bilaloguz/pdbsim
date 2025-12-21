@@ -2,7 +2,7 @@
 
 An advanced **Agent-Based Simulation (ABS)** exploring the evolution of cooperation, reputation, and survival strategies in a competitive digital ecosystem. The project models how genetic traits (`DNA`), social memory (`Fame`), and economic pressure (`Taxes`) influence the emergence of altruism or selfishness.
 
-Bir rekabetçi dijital ekosistemde işbirliği, itibar ve hayatta kalma stratejilerinin evrimini inceleyen gelişmiş bir **Ajan Tabanlı Simülasyon (ABS)**. Proje, genetik özelliklerin (`DNA`), sosyal hafızanın (`Şöhret`) ve ekonomik baskının (`Vergiler`) diğerkâmlık veya bencilliğin ortaya çıkışını nasıl etkilediğini modeller.
+Bir rekabetçi dijital ekosistemde işbirliği, itibar ve hayatta kalma stratejilerinin evrimini inceleyen gelişmiş bir **Ajan Tabanlı Simülasyon (ABS)**. Proje, genetik özelliklerin (`DNA`), sosyal hafızanın (`İtibar`) ve ekonomik baskının (`Vergiler`) diğerkâmlık veya bencilliğin ortaya çıkışını nasıl etkilediğini modeller.
 
 ---
 
