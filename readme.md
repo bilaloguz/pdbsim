@@ -1,4 +1,4 @@
-# PD-Sim: Neuroevolutionary Prisoner's Dilemma
+# PD-Sim: Neuroevolutionary Prisoner's Dillemma
 
 An advanced **Agent-Based Simulation (ABS)** exploring the evolution of cooperation, culture, and intelligence in a competitive digital ecosystem. This project models how Neural Networks (`Brain`), inheritable culture (`Ideology`), and economic pressure (`Taxes`) shape the emergence of complex societies.
 
