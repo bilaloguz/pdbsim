@@ -138,10 +138,13 @@ class SimulationEngine:
             # Aging
             agent.age += 1
             
-            # Metabolism
-            agent.points -= GAME_PHYSICS["base_existence_tax"]
-            # Cognitive Tax
-            agent.points -= (agent.memory_capacity * GAME_PHYSICS["cognitive_tax_rate"])
+            # 2.2 Calculate Taxes
+            # Existence Tax + Cognitive Tax (Memory) + Brain Complexity Tax (Neurons)
+            tax = (GAME_PHYSICS["base_existence_tax"] + 
+                   (agent.memory_capacity * GAME_PHYSICS["cognitive_tax_rate"]) +
+                   (agent.dna["hidden_size"] * GAME_PHYSICS["brain_complexity_tax"]))
+            
+            agent.points -= tax
 
     def _manage_lifecycle(self):
         for agent in self.agents[:]:

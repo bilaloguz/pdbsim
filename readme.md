@@ -11,45 +11,34 @@ This simulation places autonomous agents on a 2D grid where they interact via th
 
 ### 2. Core Mechanics
 
-#### 🧠 The Brain (Neuroevolution)
-Every agent decides its actions using a Feed-Forward Neural Network (3-Layer Perceptron):
-*   **Inputs (6):**
-    1.  `MyPoints`: Current wealth (Survival pressure).
-    2.  `MyAge`: Current age (Life expectancy).
-    3.  `OppFame`: The opponent's public reputation.
-    4.  `OppHistory`: Personal memory of this opponent.
-    5.  `Bias`: Constant input.
-    6.  **`Ideology`:** Internal state representing "Willingness to Cooperate" (Trust).
+#### 🧠 The Brain 2.0 (Neuroevolution)
+Every agent possesses an **Evolvable Neural Network**:
+*   **Neurogenesis:** The brain size (Hidden Neurons) is not fixed. It evolves from **2 to 20** neurons.
+*   **Growth & Atrophy:** During mutation, a child can add a neuron (Growth) or lose one (Atrophy). The weights are adjusted to preserve the parent's knowledge.
+*   **Brain Tax:** Intelligence is expensive (`brain_complexity_tax`). Agents must balance "Being Smart" vs "Being Efficient".
+*   **Inputs (6):** `[MyPoints, MyAge, OppFame, OppHistory, Bias, Ideology]`.
 *   **Outputs (4):** `[Cooperate, Defect, Move, Ignore]`.
-*   **Evolution:** Offspring inherit their parent's weight matrices (`W1`, `W2`) with Gaussian noise mutation (`mutation_power`).
 
 #### 🧬 Genetics & Culture
 Traits are no longer just hardcoded probabilities; they are complex biological and cultural markers:
 *   **Ideology Inheritance:** Children inherit their parent's *current* Ideology (Optimism/Cynicism). This creates "Cultural Momentum"—a high-trust parent raises a high-trust child.
-*   **Evolvable Memory:** `memory_capacity` is a gene (5-50 slots). Smarter agents pay higher taxes. Nature decides if "High IQ" is worth the metabolic cost.
+*   **Evolvable Memory:** `memory_capacity` is a gene (5-50 slots). Smarter agents pay higher taxes (`cognitive_tax_rate`).
 
 #### ⚖️ Social Dynamics
-*   **Ideology (Trust Model):** Agents have a "Mood" (0.0=Cynic, 1.0=Idealist). Cooperation boosts this mood; betrayal destroys it. This acts as a short-term Recurrent Memory.
-*   **Gossip Reliability:** Public fame is noisy. Agents might hear misinformation (`gossip_reliability`), simulating the "Fog of War" in social reputation.
-*   **Migration:** If an area is overcrowded, rich agents can pay a **Migration Tax** (`migration_tax`) to "Launch" their offspring to a distant, empty part of the world.
+*   **Ideology (Trust Model):** Agents have a "Mood" (0.0=Cynic, 1.0=Idealist). Cooperation boosts this mood; betrayal destroys it.
+*   **Gossip Reliability:** Public fame is noisy. Agents might hear misinformation (`gossip_reliability`).
+*   **Migration:** Overcrowded agents can pay a **Migration Tax** (`migration_tax`) to "Launch" offspring to distant lands.
 
 #### 💰 Economic Physics
 The world is governed by strict thermodynamic laws:
-*   **Payoff Matrix:** High temptation to defect (`15` points) vs moderate reward for cooperation (`4`).
-*   **Taxes:**
-    *   **Existence Tax:** Cost of breathing (`base_existence_tax`).
-    *   **Cognitive Tax:** Cost of being smart (`cognitive_tax_rate` * Memory).
-    *   **Movement Tax:** Cost of running away.
-    *   **Migration Tax:** Cost of colonizing new lands.
+*   **Taxes:** Existence Tax + Cognitive Tax (Memory) + Brain Tax (Neurons).
+*   **Payoff Matrix:** High temptation to defect (10) vs moderate reward for cooperation (5).
 
-### 3. File Structure
-*   `main.py`: Entry point. Runs the visualizer and game loop.
-*   `config.py`: **The Control Room.** Tune taxes, mutation rates, and game physics here.
-*   `simulation/`:
-    *   `agent.py`: The Neural Network and genetic logic.
-    *   `engine.py`: The Physics Engine (Movement, Death, Reproduction).
-    *   `social.py`: The Reputation System.
-*   `verify_fix.py`: Headless script for fast statistical verification.
+### 3. Real-Time Visualization
+The simulation now runs a live dashboard with **3 Real-time Charts**:
+1.  **Population Size:** Total agents alive.
+2.  **Social Capital:** Compares Avg Reputation (Fame) vs Avg Trust (Ideology).
+3.  **Cognitive Evolution:** Compares Avg Brain Size (Red) vs Avg Memory (Orange).
 
 ### 4. How to Run
 ```bash
@@ -58,35 +47,32 @@ pip install -r requirements.txt
 
 # Run Visualization (The Movie)
 python3 main.py
-
-# Run Statistical Analysis (The Data)
-python3 verify_fix.py
 ```
-
 ---
 
 ## 🇹🇷 Türkçe Dokümantasyon
 
 ### 1. Proje Özeti
-Bu simülasyon, "Tutsak İkilemi" oyunu üzerinden etkileşime giren ajanları modeller. Basit kurallar yerine, ajanlar nesiller boyu öğrenen **Sinir Ağlarına (Yapay Zeka)** sahiptir. Ürerler, göç ederler, kültür oluştururlar ve ölürler; böylece "Doğal Seçilim" en başarılı davranışları belirler.
+Bu simülasyon, "Tutsak İkilemi" oyunu üzerinden etkileşime giren ajanları modeller. Ajanlar, nesiller boyu öğrenen ve **Evrimleşen Sinir Ağlarına (Brain 2.0)** sahiptir. Ürerler, göç ederler, kültür oluştururlar ve ölürler.
 
 ### 2. Temel Mekanikler
 
-#### 🧠 Beyin (Nöroevrim)
-Her ajan kararlarını bir Sinir Ağı ile verir:
-*   **Girdiler (6):** Puanım, Yaşım, Rakibin Şöhreti, Özel Hafızam, Bias, **İdeoloji**.
-*   **Çıktılar (4):** `[İşbirliği, İhanet, Kaç, Yoksay]`.
-*   **Evrim:** Çocuklar, ebeveynlerinin beyin ağırlıklarını (`W1`, `W2`) mutasyonla miras alır.
+#### 🧠 Beyin 2.0 (Nöroevrim)
+*   **Nörogenez:** Beyin boyutu (Gizli Nöronlar) 2 ile 20 arasında değişir ve evrimleşir.
+*   **Büyüme ve Körelme:** Mutasyon sırasında beyin büyüyebilir (yeni nöron) veya küçülebilir. Ebeveynin bilgisi korunur.
+*   **Beyin Vergisi:** Zeki olmak pahalıdır (`brain_complexity_tax`). Ajanlar "Zeki Olmak" ile "Verimli Olmak" arasında seçim yapmalıdır.
 
 #### 🧬 Genetik ve Kültür
-*   **İdeoloji Mirası:** Çocuklar, ebeveynlerinin *o anki* dünya görüşünü (İyimserlik/Kötümserlik) miras alır. Bu, "Güven Kültürü"nün nesiller boyu aktarılmasını sağlar.
-*   **Evrimleşen Hafıza:** Hafıza kapasitesi (Zeka) bir gendir. Zeki ajanlar daha yüksek "Bilişsel Vergi" öder. Doğa, zekanın maliyetine değip değmeyeceğine karar verir.
+*   **İdeoloji Mirası:** Çocuklar, ebeveynlerinin dünya görüşünü miras alır. Güven kültürü nesiller boyu aktarılır.
+*   **Bilişsel Vergi:** Hafıza kapasitesi evrimleşir, ancak yüksek hafıza daha yüksek vergi demektir.
 
-#### 💰 Ekonomik Fizik
-*   **Göç (Migration):** Zengin ajanlar, kalabalık bölgelerden kaçmak için **Göç Vergisi** ödeyerek çocuklarını dünyanın uzak köşelerine "Fırlatabilir" (Colonization).
-*   **Bilişsel Vergi:** Zeki olmak pahalıdır (`cognitive_tax_rate`). Aptal ve tasarruflu olmak bazen daha iyi bir stratejidir.
+### 3. Görselleştirme
+Canlı panelde 3 grafik bulunur:
+1.  **Nüfus:** Toplam canlı ajan sayısı.
+2.  **Sosyal Sermaye:** İtibar (Fame) ve Güven (Ideology) karşılaştırması.
+3.  **Bilişsel Evrim:** Beyin Boyutu (Nöronlar) ve Hafıza Kapasitesi.
 
-### 3. Nasıl Çalıştırılır
+### 4. Nasıl Çalıştırılır
 ```bash
 python3 main.py
 ```

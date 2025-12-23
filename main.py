@@ -17,6 +17,8 @@ def get_social_stats(engine):
     avg_points = sum(a.points for a in engine.agents) / pop
     avg_fame = sum(engine.social_ledger.get_fame(a.id) for a in engine.agents) / pop
     avg_mem = sum(a.memory_capacity for a in engine.agents) / pop
+    avg_idl = sum(a.ideology for a in engine.agents) / pop
+    avg_hidden = sum(a.dna["hidden_size"] for a in engine.agents) / pop
     
     return {
         "tick": engine.tick,
@@ -24,6 +26,8 @@ def get_social_stats(engine):
         "avg_pts": avg_points,
         "avg_fame": avg_fame,
         "avg_mem": avg_mem,
+        "avg_idl": avg_idl,
+        "avg_hidden": avg_hidden,
         "total_C": engine.coops_this_tick,
         "total_D": engine.defects_this_tick,
         "total_deaths": engine.deaths_this_tick
@@ -37,14 +41,18 @@ def main():
     
     print(f"Logging to: {logger.get_log_path()}")
 
-    MAX_TICKS = 10000
+    MAX_TICKS = 5000
     try:
         for t in range(MAX_TICKS):
             # 1. Run Engine
             engine.run_tick()
             
-            # 2. Update Visualization
-            viz.update(engine.world, engine.social_ledger, t)
+            # 2. Handle Statistics
+            stats = get_social_stats(engine)
+            
+            # 3. Update Visualization
+            if t % 1 == 0: # Smooth 60fps
+                viz.update(engine.world, engine.social_ledger, t, stats)
             
             # 3. Handle Statistics & Logging
             stats = get_social_stats(engine)

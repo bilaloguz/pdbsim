@@ -34,9 +34,13 @@ class Agent:
         
     def _init_brain(self):
         """Initializes random weights and memory traits."""
+        # Dynamic Hidden Size
+        hidden_size = random.randint(BRAIN_SETTINGS["min_hidden"], BRAIN_SETTINGS["max_hidden"])
+        
         return {
-            "W1": np.random.randn(BRAIN_SETTINGS["input_size"], BRAIN_SETTINGS["hidden_size"]),
-            "W2": np.random.randn(BRAIN_SETTINGS["hidden_size"], BRAIN_SETTINGS["output_size"]),
+            "hidden_size": hidden_size,
+            "W1": np.random.randn(BRAIN_SETTINGS["input_size"], hidden_size),
+            "W2": np.random.randn(hidden_size, BRAIN_SETTINGS["output_size"]),
             "memory_capacity": random.randint(5, 20),
             "starting_ideology": random.uniform(0.3, 0.7)
         }
@@ -44,11 +48,35 @@ class Agent:
     def mutate(self):
         """Returns a mutated copy of the current DNA (Weights + Traits)."""
         new_dna = {
+            "hidden_size": self.dna["hidden_size"],
             "W1": self.dna["W1"].copy(),
             "W2": self.dna["W2"].copy(),
             "memory_capacity": self.dna["memory_capacity"]
         }
         
+        # --- Neurogenesis / Atrophy (Brain Resizing) ---
+        if random.random() < BRAIN_SETTINGS["mutation_rate"]:
+            current_h = new_dna["hidden_size"]
+            choice = random.choice([-1, 1])
+            new_h = max(BRAIN_SETTINGS["min_hidden"], min(BRAIN_SETTINGS["max_hidden"], current_h + choice))
+            
+            if new_h > current_h: # Growth: Add Neuron (Column to W1, Row to W2)
+                # Add column to W1
+                new_col = np.random.randn(BRAIN_SETTINGS["input_size"], 1)
+                new_dna["W1"] = np.hstack((new_dna["W1"], new_col))
+                # Add row to W2
+                new_row = np.random.randn(1, BRAIN_SETTINGS["output_size"])
+                new_dna["W2"] = np.vstack((new_dna["W2"], new_row))
+                new_dna["hidden_size"] = new_h
+                
+            elif new_h < current_h: # Atrophy: Remove Neuron (Last Col of W1, Last Row of W2)
+                # Remove last column of W1
+                new_dna["W1"] = new_dna["W1"][:, :-1]
+                # Remove last row of W2
+                new_dna["W2"] = new_dna["W2"][:-1, :]
+                new_dna["hidden_size"] = new_h
+
+        # Apply Standard Noise Mutation
         # Apply Gaussian noise to W1
         mask1 = np.random.rand(*new_dna["W1"].shape) < BRAIN_SETTINGS["mutation_rate"]
         noise1 = np.random.randn(*new_dna["W1"].shape) * BRAIN_SETTINGS["mutation_power"]
