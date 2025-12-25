@@ -96,7 +96,7 @@ Her eylemin ve düşüncenin bir bedeli vardır (`BRAIN_COSTS`):
 
 ```bash
 # Clone the repository
-git clone https://github.com/your-repo/muqa.git
+git clone https://github.com/bilaloguz/muqa.git
 cd muqa
 
 # Install dependencies (Numpy, Matplotlib)
